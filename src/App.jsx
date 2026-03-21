@@ -6,6 +6,7 @@ import Billetterie from './components/Billetterie/Billetterie'
 import Acces from './components/Acces/Acces'
 import FAQ from './components/FAQ/FAQ'
 import CtaFinal from './components/CtaFinal/CtaFinal'
+import FloatingCTA from './components/FloatingCTA/FloatingCTA'
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <Acces />
       <FAQ />
       <CtaFinal />
+      <FloatingCTA />
     </main>
   )
 }

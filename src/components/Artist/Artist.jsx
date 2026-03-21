@@ -1,7 +1,7 @@
 import './Artist.css'
 import { memo, useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
-import vano2 from '../../assets/images/vano2.webp'
+import profil from '../../assets/images/profil.webp'
 import { FaTicketAlt } from 'react-icons/fa'
 
 const TIMELINE = [
@@ -53,7 +53,7 @@ function Artist() {
         </div>
 
         <motion.div className="artist__hero-image" style={{ y: imageY }}>
-          <img src={vano2} alt="Vano Baby en concert" loading="lazy" decoding="async" width="650" height="900" />
+          <img src={profil} alt="Vano Baby en concert" loading="lazy" decoding="async" width="650" height="900" />
         </motion.div>
       </div>
 
