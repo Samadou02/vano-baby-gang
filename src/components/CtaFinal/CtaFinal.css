@@ -1,11 +1,26 @@
+/* ── CTA FINAL ──────────────────────────────────────── */
 .cta-final {
-  background: #080808;
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   padding: 8rem 2rem;
   text-align: center;
   border-top: 3px solid var(--color-red);
+  overflow: hidden;
+}
+
+.cta-final::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(8, 8, 8, 0.88);
+  z-index: 0;
 }
 
 .cta-final__inner {
+  position: relative;
+  z-index: 1;
   max-width: 680px;
   margin: 0 auto;
   display: flex;
@@ -15,6 +30,7 @@
 }
 
 .cta-final__label {
+  font-family: var(--font-body);
   font-size: 0.72rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -43,6 +59,7 @@
 }
 
 .cta-final__sub {
+  font-family: var(--font-body);
   font-size: 1rem;
   color: var(--color-muted);
   line-height: 1.7;
@@ -59,6 +76,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
+  font-family: var(--font-body);
   font-size: 0.78rem;
   font-weight: 600;
   letter-spacing: 0.1em;
@@ -137,6 +155,7 @@
 }
 
 .cta-final__copy {
+  font-family: var(--font-body);
   font-size: 0.7rem;
   color: var(--color-muted);
   letter-spacing: 0.1em;
@@ -144,7 +163,7 @@
   opacity: 0.5;
 }
 
-/* RESPONSIVE */
+/* ── RESPONSIVE TABLETTE ────────────────────────────── */
 @media (max-width: 768px) {
   .cta-final {
     padding: 6rem 1.5rem;
@@ -160,6 +179,7 @@
   }
 }
 
+/* ── RESPONSIVE MOBILE ──────────────────────────────── */
 @media (max-width: 480px) {
   .cta-final {
     padding: 5rem 1.25rem;

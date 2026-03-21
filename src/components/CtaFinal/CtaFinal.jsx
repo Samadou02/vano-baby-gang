@@ -1,12 +1,21 @@
 import './CtaFinal.css'
 import { motion } from 'framer-motion'
 import { FaTicketAlt } from 'react-icons/fa'
+import hibou2 from '../../assets/images/hibou2.webp'
 
 function CtaFinal() {
   return (
-    <section className="cta-final">
-      <motion.div className="cta-final__inner" initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.7, ease: 'easeOut' }}>
-
+    <section
+      className="cta-final"
+      style={{ backgroundImage: `url(${hibou2})` }}
+    >
+      <motion.div
+        className="cta-final__inner"
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.7, ease: 'easeOut' }}
+      >
         <span className="cta-final__label">04 Avril 2026 — Majestic de Wologuèdè</span>
 
         <h2 className="cta-final__title">

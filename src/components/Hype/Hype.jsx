@@ -1,127 +1,240 @@
 import './Hype.css'
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { useRef, useEffect, useState } from 'react'
 import vanoVd from '../../assets/videos/vano-vd.mp4'
-import vano4 from '../../assets/images/vano4.jpg'
-import vano5 from '../../assets/images/vano5.jpg'
+import crowd from '../../assets/images/crowd.webp'
+import lights from '../../assets/images/lights.webp'
+import hype1 from '../../assets/images/hype1.webp'
+import hype2 from '../../assets/images/hype2.webp'
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 40 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: 'easeOut' } },
+}
+
+const stagger = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.12 } },
+}
+
+const PROOF_ITEMS = [
+  { src: crowd, alt: 'Le Gang en concert', big: 'Le Gang a toujours répondu présent.', sub: 'Des milliers de voix. Une seule scène.' },
+  { src: hype1, alt: 'Vano Baby sur scène', big: 'Une présence qui commande.', sub: 'Dès qu\'il entre, tout s\'arrête.' },
+  { src: hype2, alt: 'Vano Baby en performance', big: 'Chaque show, une promesse.', sub: 'Tenue. Sans exception.' },
+  { src: lights, alt: 'Concert de Vano Baby', big: 'Les derniers shows sont partis vite.', sub: 'Ne rate pas celui-là.' },
+]
 
 function Hype() {
-  const ref = useRef(null)
   const videoRef = useRef(null)
 
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ['start start', 'end end'],
-  })
-
-  // 4 phases : 0–0.25 / 0.25–0.5 / 0.5–0.75 / 0.75–1
-  const [phase, setPhase] = useState(0)
-
-  useEffect(() => {
-    return scrollYProgress.on('change', (v) => {
-      if (v < 0.25) setPhase(0)
-      else if (v < 0.5) setPhase(1)
-      else if (v < 0.75) setPhase(2)
-      else setPhase(3)
-    })
-  }, [scrollYProgress])
-
-  // Forcer la lecture de la vidéo
   useEffect(() => {
     if (videoRef.current) {
       videoRef.current.play().catch(() => {})
     }
   }, [])
 
-  const blocks = [
-    // Phase 0 — Intro
-    <motion.div
-      key="intro"
-      className="hype__content"
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -30 }}
-      transition={{ duration: 0.5 }}
-    >
-      <h2>Ils savent.</h2>
-    </motion.div>,
+  const targetDate = new Date('2026-04-04T16:00:00')
+  const [timeLeft, setTimeLeft] = useState(targetDate - new Date())
 
-    // Phase 1 — Texte
-    <motion.div
-      key="text"
-      className="hype__content"
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -30 }}
-      transition={{ duration: 0.5 }}
-    >
-      <p>Ce genre de moment…</p>
-      <p>ça ne se rate pas.</p>
-      <p className="gold">Le 04 Avril.</p>
-    </motion.div>,
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimeLeft(targetDate - new Date())
+    }, 1000)
+    return () => clearInterval(interval)
+  }, [])
 
-    // Phase 2 — Vidéo
-    <motion.div
-      key="video"
-      className="hype__content"
-      initial={{ opacity: 0, scale: 0.93 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.97 }}
-      transition={{ duration: 0.6 }}
-    >
-      <div className="hype__video-container">
-        <video
-          ref={videoRef}
-          src={vanoVd}
-          autoPlay
-          muted
-          loop
-          playsInline
-        />
-      </div>
-    </motion.div>,
-
-    // Phase 3 — Preuve sociale
-    <motion.div
-      key="proof"
-      className="hype__content hype__proof"
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -30 }}
-      transition={{ duration: 0.5 }}
-    >
-      <div>
-        <img src={vano4} alt="" />
-        <p>Ils étaient là.</p>
-      </div>
-      <div>
-        <img src={vano5} alt="" />
-        <p>Ils s'en souviennent encore.</p>
-      </div>
-    </motion.div>,
-  ]
+  const pad = (n) => String(Math.max(0, n)).padStart(2, '0')
+  const days = Math.max(0, Math.floor(timeLeft / (1000 * 60 * 60 * 24)))
+  const hours = Math.max(0, Math.floor((timeLeft / (1000 * 60 * 60)) % 24))
+  const minutes = Math.max(0, Math.floor((timeLeft / (1000 * 60)) % 60))
+  const seconds = Math.max(0, Math.floor((timeLeft / 1000) % 60))
 
   return (
-    <section className="hype" ref={ref}>
+    <div className="hype">
 
-      {/* ZONE STICKY — un seul bloc qui change de contenu */}
-      <div className="hype__sticky">
-        <AnimatePresence mode="wait">
-          {blocks[phase]}
-        </AnimatePresence>
+      {/* ── PHASE 1 — HOOK ── */}
+      <div className="hype__phase">
+        <motion.div
+          className="hype__phase-inner"
+          variants={stagger}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.4 }}
+        >
+          <motion.p className="hype__overline" variants={fadeUp}>
+            Vano Baby · 04 Avril 2026
+          </motion.p>
+          <motion.h2 className="hype__headline" variants={fadeUp}>
+            Une nuit.<br />Dix ans.
+          </motion.h2>
+          <motion.p className="hype__sub" variants={fadeUp}>
+            Pas un concert de plus.<br />
+            Un moment qui ne se répète pas.
+          </motion.p>
+        </motion.div>
       </div>
 
-      {/* FINAL — hors sticky */}
+      {/* ── PHASE 2 — TENSION ── */}
+      <div className="hype__phase hype__phase--dark">
+        <motion.div
+          className="hype__phase-inner"
+          variants={stagger}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.4 }}
+        >
+          <motion.p className="hype__overline" variants={fadeUp}>
+            Majestic de Wologuèdè
+          </motion.p>
+          <motion.h2 className="hype__headline" variants={fadeUp}>
+            Vano Baby<br />ne fête pas<br />deux fois.
+          </motion.h2>
+          <motion.p className="hype__sub hype__sub--gold" variants={fadeUp}>
+            Le Gang a une seule chance d'être là.
+          </motion.p>
+          <motion.p className="hype__sub" variants={fadeUp}>
+            10 ans de carrière.<br />
+            10 ans de singles qui ont fait le tour du Bénin.<br />
+            10 ans à résister, transformer, dominer.<br />
+            Une seule nuit pour tout célébrer.
+          </motion.p>
+        </motion.div>
+      </div>
+
+      {/* ── PHASE 3 — VIDÉO ── */}
+      <div className="hype__phase hype__phase--video">
+        <motion.div
+          className="hype__phase-inner"
+          variants={stagger}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+        >
+          <motion.p className="hype__overline" variants={fadeUp}>
+            Sur scène, il est chez lui
+          </motion.p>
+          <motion.h2 className="hype__headline hype__headline--sm" variants={fadeUp}>
+            Avant le 04 Avril,<br />il y avait déjà ça.
+          </motion.h2>
+          <motion.div className="hype__video-container" variants={fadeUp}>
+            <video ref={videoRef} src={vanoVd} autoPlay muted loop playsInline />
+            <div className="hype__video-overlay" />
+          </motion.div>
+          <motion.p className="hype__sub" variants={fadeUp}>
+            Chaque concert, une communion.<br />
+            Le 04 Avril sera différent. Ce sera le dernier de cette décennie.
+          </motion.p>
+        </motion.div>
+      </div>
+
+      {/* ── PHASE 4 — PREUVE SOCIALE ── */}
+      <div className="hype__phase hype__phase--dark">
+        <motion.div
+          className="hype__phase-inner hype__phase-inner--wide"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.15 }}
+          variants={stagger}
+        >
+          <motion.p className="hype__overline" variants={fadeUp}>
+            Le Gang ne ment pas
+          </motion.p>
+          <motion.h2 className="hype__headline hype__headline--sm" variants={fadeUp}>
+            Ils étaient là.<br />Toi aussi, sois là.
+          </motion.h2>
+          <div className="hype__proof">
+            {PROOF_ITEMS.map((item, i) => (
+              <motion.div
+                key={i}
+                className="hype__proof-card"
+                initial={{ opacity: 0, y: 50, scale: 0.96 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ delay: i * 0.15, duration: 0.6, ease: 'easeOut' }}
+              >
+                <div className="hype__proof-img-wrapper">
+                  <img src={item.src} alt={item.alt} loading="lazy" />
+                  <div className="hype__proof-img-overlay" />
+                </div>
+                <div className="hype__proof-text">
+                  <p className="hype__proof-big">{item.big}</p>
+                  <p className="hype__proof-sub">{item.sub}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      </div>
+
+      {/* ── PHASE 5 — COUNTDOWN ── */}
+      <div className="hype__phase">
+        <motion.div
+          className="hype__phase-inner"
+          variants={stagger}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.4 }}
+        >
+          <motion.p className="hype__overline" variants={fadeUp}>
+            Il reste peu de temps pour être là
+          </motion.p>
+          <motion.h2 className="hype__headline hype__headline--sm" variants={fadeUp}>
+            Le temps tourne.<br />Les places aussi.
+          </motion.h2>
+          <motion.div className="hype__countdown" variants={fadeUp}>
+            {[
+              { value: pad(days), label: 'Jours' },
+              { value: pad(hours), label: 'Heures' },
+              { value: pad(minutes), label: 'Min' },
+              { value: pad(seconds), label: 'Sec' },
+            ].map(({ value, label }, i, arr) => (
+              <div key={label} className="hype__countdown-block">
+                <div className="hype__countdown-card">
+                  <span className="hype__countdown-number">{value}</span>
+                </div>
+                <span className="hype__countdown-label">{label}</span>
+                {i < arr.length - 1 && (
+                  <span className="hype__countdown-sep">:</span>
+                )}
+              </div>
+            ))}
+          </motion.div>
+          <motion.p className="hype__sub" variants={fadeUp}>
+            Chaque heure qui passe,<br />
+            c'est une place de moins pour le Gang.
+          </motion.p>
+        </motion.div>
+      </div>
+
+      {/* ── FINAL — CTA ── */}
       <div className="hype__final">
-        <h3>Et toi ?</h3>
-        <p>
-          Tu regardes l'histoire…
-          <br />
-          ou tu fais partie du moment ?
-        </p>
+        <motion.div
+          className="hype__final-inner"
+          variants={stagger}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+        >
+          <motion.p className="hype__final-overline" variants={fadeUp}>
+            Majestic de Wologuèdè · 04 Avril 2026 · 16h
+          </motion.p>
+          <motion.h3 className="hype__final-title" variants={fadeUp}>
+            Le 04 Avril,<br />le Majestic<br />n'attendra personne.
+          </motion.h3>
+          <motion.p className="hype__final-sub" variants={fadeUp}>
+            Les places partent.<br />Le Gang, lui, sera là.
+          </motion.p>
+          <motion.a
+            href="#billetterie"
+            className="hype__cta"
+            variants={fadeUp}
+          >
+            Prendre ma place
+          </motion.a>
+        </motion.div>
       </div>
 
-    </section>
+    </div>
   )
 }
 
