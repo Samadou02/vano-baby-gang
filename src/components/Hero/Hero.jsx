@@ -1,7 +1,7 @@
 import './Hero.css'
 import { useEffect, useRef, useState } from 'react'
 import vanoVideo from '../../assets/videos/Vano_video.mp4'
-import hibou2 from '../../assets/images/hibou2.jpg'
+import hibou2 from '../../assets/images/hibou2.webp'
 
 function Hero() {
   const videoRef = useRef(null)
@@ -108,10 +108,12 @@ function Hero() {
           <video
             ref={videoRef}
             className="hero__video"
-            src={vanoVideo}
             playsInline
             preload="metadata"
-          />
+          >
+            <source src={vanoVideo} type="video/webm" />
+            <track kind="captions" />
+          </video>
           <button
             className={`hero__play-btn ${playing ? 'hero__play-btn--playing' : ''}`}
             onClick={handlePlay}

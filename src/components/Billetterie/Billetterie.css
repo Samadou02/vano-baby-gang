@@ -1,238 +1,335 @@
+/* ══ BILLETTERIE ════════════════════════════════════════ */
 .billetterie {
-  padding: 5rem 2rem;
-  text-align: center;
-}
-
-/* TITLE */
-.billetterie h2 {
-  font-family: 'Anton';
-  font-size: clamp(2rem, 6vw, 3rem);
-  margin-bottom: 2rem;
-}
-
-/* SELECTEUR */
-.billetterie__types {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.billetterie__types button {
-  padding: 0.6rem 1.2rem;
-  border: 1px solid var(--color-border);
-  background: transparent;
-  color: var(--color-text);
-  cursor: pointer;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  transition: background 0.2s, color 0.2s;
-}
-
-.billetterie__types .active {
-  background: var(--color-gold);
-  color: #000;
-}
-
-/* CARD */
-.billetterie__card {
-  margin-top: 2rem;
-  max-width: 400px;
-  margin-inline: auto;
-  background: var(--color-surface);
-  padding: 2rem;
-  border-radius: 16px;
-  border: 1px solid var(--color-border);
-}
-
-/* PRICE */
-.price {
-  font-family: 'Anton';
-  font-size: 2rem;
-  color: var(--color-gold);
-}
-
-/* STOCK BAR */
-.billetterie__stock {
-  margin-top: 1rem;
-  height: 6px;
-  background: #222;
-  border-radius: 10px;
+  width: 100%;
+  background: #0e0a0a;
+  padding: 6rem 2rem;
   overflow: hidden;
 }
 
-.bar {
+.billetterie__inner {
+  max-width: 520px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+/* ── HEADER ─────────────────────────────────────────── */
+.billetterie__header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.billetterie__eyebrow {
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
+.billetterie__title {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  text-transform: uppercase;
+  color: var(--color-text);
+  line-height: 1;
+  letter-spacing: 0.02em;
+}
+
+.billetterie__subtitle {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--color-muted);
+  letter-spacing: 0.05em;
+}
+
+/* ── SÉLECTEUR ──────────────────────────────────────── */
+.billetterie__types {
+  display: flex;
+  justify-content: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.billetterie__type-btn {
+  padding: 0.55rem 1.2rem;
+  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-muted);
+  cursor: pointer;
+  border-radius: 50px;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+.billetterie__type-btn:hover {
+  border-color: var(--color-gold);
+  color: var(--color-gold);
+}
+
+.billetterie__type-btn.active {
+  background: var(--color-gold);
+  border-color: var(--color-gold);
+  color: #080808;
+  font-weight: 600;
+}
+
+/* ── CARD ───────────────────────────────────────────── */
+.billetterie__card {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(212, 175, 55, 0.15);
+  padding: 2rem;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+  transition: border-color 0.3s ease;
+}
+
+.billetterie__card--low {
+  border-color: rgba(139, 0, 0, 0.5);
+}
+
+/* Card top */
+.billetterie__card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.billetterie__card-name {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.4rem;
+  text-transform: uppercase;
+  color: var(--color-text);
+  letter-spacing: 0.05em;
+  line-height: 1;
+}
+
+.billetterie__card-price {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.6rem;
+  color: var(--color-gold);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  text-align: right;
+}
+
+.billetterie__card-currency {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  color: var(--color-muted);
+  letter-spacing: 0.1em;
+}
+
+/* ── JAUGE ──────────────────────────────────────────── */
+.billetterie__gauge-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.billetterie__gauge {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.billetterie__gauge-fill {
   height: 100%;
+  background: var(--color-gold);
+  border-radius: 2px;
+}
+
+.billetterie__card--low .billetterie__gauge-fill {
   background: var(--color-red);
 }
 
-.remaining {
-  font-size: 0.8rem;
+.billetterie__remaining {
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
   color: var(--color-muted);
-  margin-top: 0.5rem;
 }
 
-/* QTY */
+.billetterie__remaining--low {
+  color: var(--color-red);
+}
+
+/* ── QUANTITÉ ───────────────────────────────────────── */
 .billetterie__qty {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1rem;
-  margin: 1.5rem 0;
+  gap: 1.5rem;
 }
 
-.billetterie__qty button {
-  width: 36px;
-  height: 36px;
+.billetterie__qty-btn {
+  width: 38px;
+  height: 38px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: none;
-  background: var(--color-red);
-  color: #fff;
-  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-text);
+  border-radius: 50%;
   cursor: pointer;
-  font-size: 1.1rem;
+  font-size: 0.85rem;
   flex-shrink: 0;
-  transition: opacity 0.2s;
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
 }
 
-.billetterie__qty button:hover {
-  opacity: 0.85;
+.billetterie__qty-btn:hover:not(:disabled) {
+  border-color: var(--color-gold);
+  color: var(--color-gold);
+  background: rgba(212, 175, 55, 0.06);
 }
 
-.billetterie__qty span {
+.billetterie__qty-btn:disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+}
+
+.billetterie__qty-value {
   font-family: 'Anton', sans-serif;
-  font-size: 1.4rem;
-  min-width: 2rem;
+  font-size: 2rem;
+  color: var(--color-text);
+  min-width: 2.5rem;
+  text-align: center;
+  line-height: 1;
+  display: block;
 }
 
-/* TOTAL */
-.total {
-  font-weight: bold;
-  margin-bottom: 1rem;
-  font-size: 1rem;
+/* ── TOTAL ──────────────────────────────────────────── */
+.billetterie__total {
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  text-align: center;
 }
 
-/* CTA */
-.cta {
+.billetterie__total span {
+  color: var(--color-gold);
+  font-weight: 600;
+}
+
+/* ── CTA ────────────────────────────────────────────── */
+.billetterie__cta {
   width: 100%;
-  padding: 1rem;
+  padding: 1rem 1.5rem;
   background: var(--color-gold);
   border: none;
-  border-radius: 10px;
-  font-family: 'Anton';
-  font-size: 1rem;
-  letter-spacing: 0.05em;
+  border-radius: 50px;
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
   cursor: pointer;
   color: #080808;
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.3s ease, transform 0.2s ease;
 }
 
-.cta:hover {
-  opacity: 0.88;
+.billetterie__cta::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.35) 50%,
+    transparent 100%
+  );
+  animation: shimmer 2.5s infinite;
+}
+
+.billetterie__cta:hover {
+  background: var(--color-text);
   transform: translateY(-2px);
 }
 
-.cta:active {
+.billetterie__cta:active {
   transform: translateY(0);
 }
 
-/* ===== RESPONSIVE ===== */
-
-@media (max-width: 1024px) {
-  .billetterie {
-    padding: 4rem 2rem;
-  }
-
-  .billetterie__card {
-    max-width: 440px;
-  }
-}
-
+/* ── RESPONSIVE TABLETTE ────────────────────────────── */
 @media (max-width: 768px) {
   .billetterie {
     padding: 4rem 1.5rem;
   }
 
-  .billetterie h2 {
-    margin-bottom: 1.5rem;
-  }
-
-  .billetterie__types {
-    gap: 0.6rem;
-  }
-
-  .billetterie__types button {
-    padding: 0.55rem 1rem;
-    font-size: 0.85rem;
-  }
-
   .billetterie__card {
-    max-width: 100%;
     padding: 1.5rem;
-    border-radius: 12px;
   }
 
-  .price {
-    font-size: 1.75rem;
-  }
-
-  .billetterie__qty {
-    gap: 1.25rem;
-  }
-
-  .billetterie__qty span {
-    font-size: 1.25rem;
-  }
-
-  .total {
-    font-size: 0.95rem;
-  }
-
-  .cta {
-    padding: 0.9rem;
-    font-size: 0.95rem;
+  .billetterie__card-price {
+    font-size: 1.4rem;
   }
 }
 
+/* ── RESPONSIVE MOBILE ──────────────────────────────── */
 @media (max-width: 480px) {
   .billetterie {
     padding: 3.5rem 1rem;
   }
 
-  .billetterie__types {
-    gap: 0.5rem;
-  }
-
-  .billetterie__types button {
-    padding: 0.5rem 0.85rem;
-    font-size: 0.8rem;
-    border-radius: 6px;
+  .billetterie__inner {
+    gap: 2rem;
   }
 
   .billetterie__card {
-    padding: 1.25rem;
-    border-radius: 10px;
+    padding: 1.2rem;
+    border-radius: 12px;
+    gap: 1.2rem;
   }
 
-  .price {
-    font-size: 1.5rem;
+  .billetterie__card-top {
+    flex-direction: column;
+    gap: 0.3rem;
   }
 
-  .billetterie__qty button {
-    width: 32px;
-    height: 32px;
-    font-size: 1rem;
+  .billetterie__card-price {
+    text-align: left;
+    font-size: 1.3rem;
   }
 
-  .billetterie__qty span {
-    font-size: 1.1rem;
+  .billetterie__type-btn {
+    padding: 0.45rem 0.9rem;
+    font-size: 0.7rem;
   }
 
-  .cta {
-    padding: 0.85rem;
-    font-size: 0.9rem;
-    border-radius: 8px;
+  .billetterie__qty-value {
+    font-size: 1.6rem;
+  }
+
+  .billetterie__cta {
+    font-size: 0.72rem;
+    padding: 0.9rem 1rem;
   }
 }
