@@ -26,20 +26,25 @@ const PROOF_ITEMS = [
 
 function Hype() {
   const videoRef = useRef(null)
+  const [playVideo, setPlayVideo] = useState(false)
 
+  // Lazy-load vidéo avec IntersectionObserver
   useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.play().catch(() => {})
-    }
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setPlayVideo(true)
+      },
+      { threshold: 0.25 }
+    )
+    if (videoRef.current) observer.observe(videoRef.current)
+    return () => observer.disconnect()
   }, [])
 
   const targetDate = new Date('2026-04-04T16:00:00')
   const [timeLeft, setTimeLeft] = useState(targetDate - new Date())
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setTimeLeft(targetDate - new Date())
-    }, 1000)
+    const interval = setInterval(() => setTimeLeft(targetDate - new Date()), 1000)
     return () => clearInterval(interval)
   }, [])
 
@@ -52,15 +57,9 @@ function Hype() {
   return (
     <div className="hype">
 
-      {/* ── PHASE 1 — HOOK ── */}
+      {/* PHASE 1 — HOOK */}
       <div className="hype__phase">
-        <motion.div
-          className="hype__phase-inner"
-          variants={stagger}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.4 }}
-        >
+        <motion.div className="hype__phase-inner" variants={stagger} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.4 }}>
           <motion.p className="hype__overline" variants={fadeUp}>
             Vano Baby · 04 Avril 2026
           </motion.p>
@@ -68,21 +67,14 @@ function Hype() {
             Une nuit.<br />Dix ans.
           </motion.h2>
           <motion.p className="hype__sub" variants={fadeUp}>
-            Pas un concert de plus.<br />
-            Un moment qui ne se répète pas.
+            Pas un concert de plus.<br />Un moment qui ne se répète pas.
           </motion.p>
         </motion.div>
       </div>
 
-      {/* ── PHASE 2 — TENSION ── */}
+      {/* PHASE 2 — TENSION */}
       <div className="hype__phase hype__phase--dark">
-        <motion.div
-          className="hype__phase-inner"
-          variants={stagger}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.4 }}
-        >
+        <motion.div className="hype__phase-inner" variants={stagger} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.4 }}>
           <motion.p className="hype__overline" variants={fadeUp}>
             Majestic de Wologuèdè
           </motion.p>
@@ -101,15 +93,9 @@ function Hype() {
         </motion.div>
       </div>
 
-      {/* ── PHASE 3 — VIDÉO ── */}
-      <div className="hype__phase hype__phase--video">
-        <motion.div
-          className="hype__phase-inner"
-          variants={stagger}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-        >
+      {/* PHASE 3 — VIDÉO */}
+      <div className="hype__phase hype__phase--video" ref={videoRef}>
+        <motion.div className="hype__phase-inner" variants={stagger} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }}>
           <motion.p className="hype__overline" variants={fadeUp}>
             Sur scène, il est chez lui
           </motion.p>
@@ -117,52 +103,36 @@ function Hype() {
             Avant le 04 Avril,<br />il y avait déjà ça.
           </motion.h2>
           <motion.div className="hype__video-container" variants={fadeUp}>
-            <video
-              ref={videoRef}
-              autoPlay
-              muted
-              loop
-              playsInline
-            >
-              <source src={vanoVd} type="video/mp4" />
-              <track kind="captions" />
-            </video>
+            {playVideo && (
+              <video autoPlay muted loop playsInline preload="none" poster={crowd}>
+                <source src={vanoVd} type="video/mp4" />
+                <track kind="captions" />
+              </video>
+            )}
             <div className="hype__video-overlay" />
           </motion.div>
           <motion.p className="hype__sub" variants={fadeUp}>
-            Chaque concert, une communion.<br />
-            Le 04 Avril sera différent. Ce sera le dernier de cette décennie.
+            Chaque concert, une communion.<br />Le 04 Avril sera différent. Ce sera le dernier de cette décennie.
           </motion.p>
         </motion.div>
       </div>
 
-      {/* ── PHASE 4 — PREUVE SOCIALE ── */}
+      {/* PHASE 4 — PREUVE SOCIALE */}
       <div className="hype__phase hype__phase--dark">
-        <motion.div
-          className="hype__phase-inner hype__phase-inner--wide"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.15 }}
-          variants={stagger}
-        >
-          <motion.p className="hype__overline" variants={fadeUp}>
-            Le Gang ne ment pas
-          </motion.p>
-          <motion.h2 className="hype__headline hype__headline--sm" variants={fadeUp}>
-            Ils étaient là.<br />Toi aussi, sois là.
-          </motion.h2>
+        <motion.div className="hype__phase-inner hype__phase-inner--wide" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.15 }} variants={stagger}>
+          <motion.p className="hype__overline" variants={fadeUp}>Le Gang ne ment pas</motion.p>
+          <motion.h2 className="hype__headline hype__headline--sm" variants={fadeUp}>Ils étaient là.<br />Toi aussi, sois là.</motion.h2>
           <div className="hype__proof">
             {PROOF_ITEMS.map((item, i) => (
-              <motion.div
-                key={i}
-                className="hype__proof-card"
-                initial={{ opacity: 0, y: 50, scale: 0.96 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ delay: i * 0.15, duration: 0.6, ease: 'easeOut' }}
-              >
+              <motion.div key={i} className="hype__proof-card" initial={{ opacity: 0, y: 50, scale: 0.96 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} viewport={{ once: true, amount: 0.2 }} transition={{ delay: i * 0.15, duration: 0.6, ease: 'easeOut' }}>
                 <div className="hype__proof-img-wrapper">
-                  <img src={item.src} alt={item.alt} loading="lazy" />
+                  <img 
+                    src={item.src} 
+                    alt={item.alt} 
+                    loading="lazy"
+                    srcSet={`${item.src} 320w, ${item.src} 640w, ${item.src} 1280w`}
+                    sizes="(max-width: 768px) 320px, (max-width: 1200px) 640px, 1280px"
+                  />
                   <div className="hype__proof-img-overlay" />
                 </div>
                 <div className="hype__proof-text">
@@ -175,71 +145,31 @@ function Hype() {
         </motion.div>
       </div>
 
-      {/* ── PHASE 5 — COUNTDOWN ── */}
+      {/* PHASE 5 — COUNTDOWN */}
       <div className="hype__phase">
-        <motion.div
-          className="hype__phase-inner"
-          variants={stagger}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.4 }}
-        >
-          <motion.p className="hype__overline" variants={fadeUp}>
-            Il reste peu de temps pour être là
-          </motion.p>
-          <motion.h2 className="hype__headline hype__headline--sm" variants={fadeUp}>
-            Le temps tourne.<br />Les places aussi.
-          </motion.h2>
+        <motion.div className="hype__phase-inner" variants={stagger} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.4 }}>
+          <motion.p className="hype__overline" variants={fadeUp}>Il reste peu de temps pour être là</motion.p>
+          <motion.h2 className="hype__headline hype__headline--sm" variants={fadeUp}>Le temps tourne.<br />Les places aussi.</motion.h2>
           <motion.div className="hype__countdown" variants={fadeUp}>
-            {[
-              { value: pad(days), label: 'Jours' },
-              { value: pad(hours), label: 'Heures' },
-              { value: pad(minutes), label: 'Min' },
-              { value: pad(seconds), label: 'Sec' },
-            ].map(({ value, label }, i, arr) => (
+            {[{ value: pad(days), label: 'Jours' }, { value: pad(hours), label: 'Heures' }, { value: pad(minutes), label: 'Min' }, { value: pad(seconds), label: 'Sec' }].map(({ value, label }, i, arr) => (
               <div key={label} className="hype__countdown-block">
-                <div className="hype__countdown-card">
-                  <span className="hype__countdown-number">{value}</span>
-                </div>
+                <div className="hype__countdown-card"><span className="hype__countdown-number">{value}</span></div>
                 <span className="hype__countdown-label">{label}</span>
-                {i < arr.length - 1 && (
-                  <span className="hype__countdown-sep">:</span>
-                )}
+                {i < arr.length - 1 && <span className="hype__countdown-sep">:</span>}
               </div>
             ))}
           </motion.div>
-          <motion.p className="hype__sub" variants={fadeUp}>
-            Chaque heure qui passe,<br />
-            c'est une place de moins pour le Gang.
-          </motion.p>
+          <motion.p className="hype__sub" variants={fadeUp}>Chaque heure qui passe,<br />c'est une place de moins pour le Gang.</motion.p>
         </motion.div>
       </div>
 
-      {/* ── FINAL — CTA ── */}
+      {/* FINAL — CTA */}
       <div className="hype__final">
-        <motion.div
-          className="hype__final-inner"
-          variants={stagger}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-        >
-          <motion.p className="hype__final-overline" variants={fadeUp}>
-            Majestic de Wologuèdè · 04 Avril 2026 · 16h
-          </motion.p>
-          <motion.h3 className="hype__final-title" variants={fadeUp}>
-            Le 04 Avril,<br />le Majestic<br />n'attendra personne.
-          </motion.h3>
-          <motion.p className="hype__final-sub" variants={fadeUp}>
-            Les places partent.<br />Le Gang, lui, sera là.
-          </motion.p>
-          <motion.a
-            href="#billetterie"
-            className="hype__cta"
-            variants={fadeUp}
-          >
-            Prendre ma place
-          </motion.a>
+        <motion.div className="hype__final-inner" variants={stagger} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }}>
+          <motion.p className="hype__final-overline" variants={fadeUp}>Majestic de Wologuèdè · 04 Avril 2026 · 16h</motion.p>
+          <motion.h3 className="hype__final-title" variants={fadeUp}>Le 04 Avril,<br />le Majestic<br />n'attendra personne.</motion.h3>
+          <motion.p className="hype__final-sub" variants={fadeUp}>Les places partent.<br />Le Gang, lui, sera là.</motion.p>
+          <motion.a href="#billetterie" className="hype__cta" variants={fadeUp}>Prendre ma place</motion.a>
         </motion.div>
       </div>
 
