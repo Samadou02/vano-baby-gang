@@ -1,23 +1,30 @@
 import './App.css'
 import Hero from './components/Hero/Hero'
-import Hype from './components/Hype/Hype'
-import Artist from './components/Artist/Artist'
-import Billetterie from './components/Billetterie/Billetterie'
-import Acces from './components/Acces/Acces'
-import FAQ from './components/FAQ/FAQ'
-import CtaFinal from './components/CtaFinal/CtaFinal'
 import FloatingCTA from './components/FloatingCTA/FloatingCTA'
+import React, { Suspense, lazy } from 'react'
+
+// lazy pour les sections lourdes
+const Hype = lazy(() => import('./components/Hype/Hype'))
+const Artist = lazy(() => import('./components/Artist/Artist'))
+const Billetterie = lazy(() => import('./components/Billetterie/Billetterie'))
+const Acces = lazy(() => import('./components/Acces/Acces'))
+const FAQ = lazy(() => import('./components/FAQ/FAQ'))
+const CtaFinal = lazy(() => import('./components/CtaFinal/CtaFinal'))
 
 function App() {
   return (
     <main>
       <Hero />
-      <Hype />
-      <Artist />
-      <Billetterie />
-      <Acces />
-      <FAQ />
-      <CtaFinal />
+
+      <Suspense fallback={<div>Loading section...</div>}>
+        <Hype />
+        <Artist />
+        <Billetterie />
+        <Acces />
+        <FAQ />
+        <CtaFinal />
+      </Suspense>
+
       <FloatingCTA />
     </main>
   )
