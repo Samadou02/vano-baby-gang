@@ -117,7 +117,16 @@ function Hype() {
             Avant le 04 Avril,<br />il y avait déjà ça.
           </motion.h2>
           <motion.div className="hype__video-container" variants={fadeUp}>
-            <video ref={videoRef} src={vanoVd} autoPlay muted loop playsInline />
+            <video
+              ref={videoRef}
+              autoPlay
+              muted
+              loop
+              playsInline
+            >
+              <source src={vanoVd} type="video/mp4" />
+              <track kind="captions" />
+            </video>
             <div className="hype__video-overlay" />
           </motion.div>
           <motion.p className="hype__sub" variants={fadeUp}>
